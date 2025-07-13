@@ -1,0 +1,3 @@
+
+Type: Deposit Date: 7/14/2025 1:32:30 AM Amount: 500.50
+Type: Withdraw Date: 7/14/2025 1:32:30 AM Amount: 100.50
