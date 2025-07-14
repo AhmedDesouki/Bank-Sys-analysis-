@@ -12,3 +12,4 @@ D:\ITI\Bank Sys analysis\obj\Debug\net8.0\refint\Bank Sys analysis.dll
 D:\ITI\Bank Sys analysis\obj\Debug\net8.0\Bank Sys analysis.pdb
 D:\ITI\Bank Sys analysis\obj\Debug\net8.0\Bank Sys analysis.genruntimeconfig.cache
 D:\ITI\Bank Sys analysis\obj\Debug\net8.0\ref\Bank Sys analysis.dll
+D:\ITI\Bank Sys analysis\obj\Debug\net8.0\Bank Sys analysis.sourcelink.json

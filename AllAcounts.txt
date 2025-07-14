@@ -1,8 +1,2 @@
 Customer ID: 1, Name: ahmed, Balance: $100.50
-Customer ID: 1, Name: ahmed, Balance: $100.50
-Customer ID: 1, Name: ahmed, Balance: $100.50
-Customer ID: 1, Name: ahmed, Balance: $100.50
-Customer ID: 1, Name: ahmed, Balance: $100.50
-Customer ID: 1, Name: ahmed, Balance: $100.50
-Customer ID: 1, Name: ahmed, Balance: $100.50
-Customer ID: 1, Name: ahmed, Balance: $100.50
+Customer ID: 2, Name: mohamed, Balance: $200.00

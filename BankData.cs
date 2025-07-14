@@ -8,11 +8,13 @@ namespace Bank_Sys_Analysis_SURE_Intern
 {
     internal class BankData<T>
     {
-        public List<T> items { get; set; }
+        public List<T> items { get; set; }= new List<T>();  
         public void AddItem(T item)
         {
-            if(item is Customer)
+            
+            if (item is Customer)
             {
+                
                 File.AppendAllText("D:\\ITI\\Bank Sys analysis\\AllAcounts.txt", item.ToString() + Environment.NewLine);
             }
              if(item is Transaction)
@@ -22,11 +24,38 @@ namespace Bank_Sys_Analysis_SURE_Intern
 
                 
             }
+             items.Add(item);
             
         }
-        public List<T> GetAll() {
+        public List<T> GetAll(T item)
+        {
+            List<T> list = new List<T>();
+            if (item is Customer){ 
+             foreach (T customer in items)
+                {
+                    
+                    list.Add(customer);
+                        
+                }
+                return list;
+            }
+            if (item is Transaction)
+            {
+                foreach (T transaction in items)
+                {
+                    
+                    list.Add(transaction);
+                   
+                }
+                return list;
+            }
 
-            return items;
- }
+                return items;
+        }
+
+        public override string ToString()
+        {
+            return $"AllData: {items} ";
+        }
     }
 }

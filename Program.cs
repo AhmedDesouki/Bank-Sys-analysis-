@@ -19,6 +19,7 @@ namespace Bank_Sys_Analysis_SURE_Intern
 
             BankData<Customer> bankData = new BankData<Customer>();
             bankData.AddItem(customer);
+            bankData.AddItem(customer1);
 
             BankData<Transaction> bankData1 = new BankData<Transaction>();
 
@@ -36,7 +37,13 @@ namespace Bank_Sys_Analysis_SURE_Intern
 
             Account account1 = new Account("1",customer1);
 
-            //Console.WriteLine(customer);
+            Console.WriteLine(account1);
+            foreach (var data in bankData1.items)
+            {
+                Console.WriteLine(data.ToString());
+            }
+            Admin admin = new Admin(6,"Hazem",33);
+            admin.View_all_accounts();
             //Console.WriteLine(customer.Balance);
             // Console.WriteLine("alo");
         }
