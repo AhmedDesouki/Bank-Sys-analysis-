@@ -8,13 +8,18 @@ namespace Bank_Sys_Analysis_SURE_Intern
 {
      internal class Person
     {
-        public int Id { get; set; }
+        private static int counter = 0;
+
+        public int Id { get;}
         public string Name { get; set; }
         public  int Age { get; set; }
 
-        public Person(int id,string name,int age)
+        public Person() {
+            Id = ++counter;
+        } 
+        public Person(string name,int age)
         {
-            Id = id;
+            
             Name = name;    
             Age = age;
         }

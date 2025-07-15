@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Bank Sys analysis")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+45016d32eb51b165983b1126d13125a1b307ccfe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea1bf064f52d1d300aeb163abeddac4c857b2fb0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Bank Sys analysis")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Bank Sys analysis")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

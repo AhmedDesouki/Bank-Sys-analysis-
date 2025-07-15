@@ -3,8 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
+using System.Xml.Linq;
 
 namespace Bank_Sys_Analysis_SURE_Intern
 {
@@ -13,18 +16,37 @@ namespace Bank_Sys_Analysis_SURE_Intern
        
         public decimal Balance { get; set; }
         public List<Transaction> transactions { get; set; }=new List<Transaction>();
-        public Customer(int id, string name, int age,decimal balance) : base(id, name, age)
+        BankData<Transaction> bankData = new BankData<Transaction>();
+
+        //customer has list of accounts 1-to-many
+        public List<Account> Accounts { get; set; } = new List<Account>();
+        public Customer() : base() 
         {
             
-            Balance = balance;
         }
-         
-        public Customer CreateAccount(int id, string name, int age, decimal balance)
+        public Customer(string name, int age,decimal balance) : base(name, age)
         {
-            Customer customer=new Customer(id,name,age,balance);
-          
+            
+             Balance = balance;
+        }
+        public Customer(string name, int age) : base(name, age)
+        {
+
+            
+        }
+        
+
+        public static Customer CreateCustomer(string name, int age)
+        {
+            Customer customer=new Customer();
+            customer.Name = name;  
+            customer.Age = age;
+            Account account = new Account(customer);
+            //need to add account to list<account>
+           // customer.Accounts.Add(account);
             return customer;
         }
+
 
         public static decimal ViewBalance(int id,Customer customer)
         {
@@ -41,18 +63,38 @@ namespace Bank_Sys_Analysis_SURE_Intern
                 return 0;
             }
 
+
             
         }
-        public void Deposit(int id, decimal amount,Customer customer)
+        public void Deposit(string name, decimal amount)
         {
             //if id == customer.id --->  balance+=amout
+            //error conversion list
+            string myfileAccounts = "D:\\ITI\\Bank Sys analysis\\Accounts.json";
 
-            Transaction transaction = new Transaction("Deposit", DateTime.Now, amount);
-            if (id == customer.Id)
+            var options = new JsonSerializerOptions
             {
-                customer.Balance += amount;
-                transactions.Add(transaction);
+                WriteIndented = false,
+                PropertyNameCaseInsensitive = true
+            };
+            List<Customer> result= new List<Customer>();
+            foreach (string line in File.ReadLines(myfileAccounts))
+            {
+                //customers = JsonSerializer.Deserialize<List<Customer>>(line, options);
+                var customer = JsonSerializer.Deserialize<Customer>(line, options);
+                result.Add(customer);
+                
             }
+            Customer customerToUpdate = result.FirstOrDefault(c => c.Name == name);
+            if (customerToUpdate == null) { throw new ArgumentException($"Customer with username {name} not found"); }
+            Transaction transaction = new Transaction("Deposit", DateTime.Now, amount);
+            customerToUpdate.Balance += amount;
+            customerToUpdate.transactions.Add(transaction);
+            bankData.AddItem(transaction);
+
+            //Save back to file
+            string updatedJson = JsonSerializer.Serialize(result, options);
+            File.WriteAllText(myfileAccounts, updatedJson+ Environment.NewLine);
         }
 
         public void Withdraw(int id, decimal amount,Customer customer)
@@ -83,27 +125,31 @@ namespace Bank_Sys_Analysis_SURE_Intern
             }
 
         }
-        //why this output [System.Collections.Generic.List`1[Bank_Sys_Analysis_SURE_Intern.Transaction]] tostring !!!
-        //public static List<Transaction> ViewTransactionHistory(Customer customer)
-        //{
-
-        //    List<Transaction> history = new List<Transaction>();
-        //    foreach (var transaction in customer.transactions)
-        //    {
-        //        history.Add(transaction);
-        //    }
-        //    return history;
-        //}
-
-        public static List<Transaction> ViewTransactionHistory(Customer customer)
+        
+        public static List<Transaction> ViewTransactionHistory(string username)
         {
+            string myfileAccounts = "D:\\ITI\\Bank Sys analysis\\Accounts.json";
 
-            if (customer.transactions == null)
+            var options = new JsonSerializerOptions
             {
-                return new List<Transaction>(); 
-            }
+                WriteIndented = false,
+                PropertyNameCaseInsensitive = true
+            };
+            List<Customer> result = new List<Customer>();
+            List<Transaction> CustomerTransactions = new List<Transaction>();
+            foreach (string line in File.ReadLines(myfileAccounts))
+            {
+                //customers = JsonSerializer.Deserialize<List<Customer>>(line, options);
+                var customer = JsonSerializer.Deserialize<Customer>(line, options);
+                result.Add(customer);
 
-            return new List<Transaction>(customer.transactions);
+            }
+            Customer TragetedCustomer= result.FirstOrDefault(c => c.Name == username);
+            if (TragetedCustomer == null) { throw new ArgumentException($"Customer with username {username} not found"); }
+            //customer . trans -->>add it to list of trans
+            CustomerTransactions= TragetedCustomer.transactions;
+           
+            return CustomerTransactions;
         }
 
 

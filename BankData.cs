@@ -1,41 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Bank_Sys_Analysis_SURE_Intern
 {
     internal class BankData<T>
     {
-        public List<T> items { get; set; }= new List<T>();  
+        public List<T> items { get; set; } = new List<T>();
         public void AddItem(T item)
         {
-            
-            if (item is Customer)
-            {
-                
-                File.AppendAllText("D:\\ITI\\Bank Sys analysis\\AllAcounts.txt", item.ToString() + Environment.NewLine);
-            }
-             if(item is Transaction)
-            {
-                
-                 File.AppendAllText("D:\\ITI\\Bank Sys analysis\\AllTransactions.txt", item.ToString() + Environment.NewLine);
 
-                
+            if (item is Customer customer)
+            {
+                //need another option instead of copy/past
+                var options = new JsonSerializerOptions
+                {
+
+                    //ReferenceHandler = ReferenceHandler.Preserve, // Handles circular references
+                    WriteIndented = false,
+                    ReferenceHandler = ReferenceHandler.IgnoreCycles
+                    // MaxDepth = 128 // Increase if needed
+
+                };
+                string json = JsonSerializer.Serialize(customer, options);
+                File.WriteAllText("D:\\ITI\\Bank Sys analysis\\Accounts.json", json.Trim() + Environment.NewLine);
             }
-             items.Add(item);
-            
+            if (item is Transaction)
+            {
+                var options = new JsonSerializerOptions
+                {
+
+                    WriteIndented = false,
+                    ReferenceHandler = ReferenceHandler.IgnoreCycles
+
+                };
+                string json = JsonSerializer.Serialize(item, options);
+                File.AppendAllText("D:\\ITI\\Bank Sys analysis\\Transactions.json", json.Trim() + Environment.NewLine);
+
+
+            }
+            items.Add(item);
+
         }
         public List<T> GetAll(T item)
         {
             List<T> list = new List<T>();
-            if (item is Customer){ 
-             foreach (T customer in items)
+            if (item is Customer)
+            {
+                foreach (T customer in items)
                 {
-                    
+
                     list.Add(customer);
-                        
+
                 }
                 return list;
             }
@@ -43,14 +58,14 @@ namespace Bank_Sys_Analysis_SURE_Intern
             {
                 foreach (T transaction in items)
                 {
-                    
+
                     list.Add(transaction);
-                   
+
                 }
                 return list;
             }
 
-                return items;
+            return items;
         }
 
         public override string ToString()
